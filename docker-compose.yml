@@ -1,0 +1,70 @@
+version: "3.8"
+
+services:
+  db:
+    image: "postgres:12.15-bullseye"
+    environment:
+      - POSTGRES_USER=giv
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=giv
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./database/pg_hba.conf:/tmp/pg_hba.conf
+      - dbdata:/var/lib/postgresql/data:delegated
+      - ./database/docker-entrypoint.sh:/docker-entrypoint-initdb.d/docker-entrypoint.sh:delegated
+    networks:
+      - app-network
+
+  broker:
+    image: "rabbitmq:3-alpine"
+    ports:
+      - "5672:5672"
+    networks:
+      - app-network
+
+  result:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend:/home/user/app/backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - broker
+      - result
+    networks:
+      - app-network
+    environment:
+      - POSTGRES_USER=giv
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=giv
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend:/home/user/app/frontend
+    ports:
+      - "3000:80"
+    networks:
+      - app-network
+
+volumes:
+  dbdata:
+
+networks:
+  app-network:
+

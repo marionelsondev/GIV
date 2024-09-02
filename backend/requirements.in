@@ -1,0 +1,29 @@
+#
+#Core
+fastapi
+uvicorn[standard]
+sqlalchemy
+psycopg2-binary
+pydantic
+
+# Rest API and Request/Response Processing
+httpx
+fastapi-sqlalchemy
+fastapi-users
+fastapi-jwt-auth
+
+# Database and Persistence
+sqlalchemy-utils
+alembic
+bcrypt
+
+# Developer Tools
+ipython
+sentry-sdk[fastapi]
+
+# Application Deployment and Configuration
+gunicorn
+python-decouple
+
+# HTTP Client
+urllib3<2.0.0

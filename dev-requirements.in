@@ -1,0 +1,24 @@
+# Test and Coverage
+pytest
+pytest-asyncio
+pytest-cov
+
+# Linting and Code Quality
+flake8
+black
+isort
+pylint
+pylint-fastapi
+
+# Factory and Mocking
+factory_boy
+
+# Security and Safety
+bandit
+safety
+
+# Pre-commit Hooks
+pre-commit
+
+# IPython for Interactive Development
+ipython
